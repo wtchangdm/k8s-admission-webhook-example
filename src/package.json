@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "fastify": "^3.18.0"
+  },
+  "devDependencies": {
+    "@kubernetes/client-node": "^0.14.3"
+  }
+}

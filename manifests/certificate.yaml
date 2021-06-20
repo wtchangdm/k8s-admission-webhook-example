@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wtcx-admission-webhook-crt
+  namespace: default
+spec:
+  # Secret names are always required.
+  secretName: wtcx-admission-webhook-crt-secret
+  duration: 87600h # 10 years
+  renewBefore: 78840h # 9 years
+  subject:
+    organizations:
+    - wtcx.dev
+  isCA: true
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    # - client auth
+    - digital signature
+    - key encipherment
+  dnsNames:
+    - wtcx-admission-webhook
+    - wtcx-admission-webhook.default
+    - wtcx-admission-webhook.default.svc
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer

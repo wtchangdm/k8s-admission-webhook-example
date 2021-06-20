@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wtcx-admission-webhook
+  name: wtcx-admission-webhook
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wtcx-admission-webhook
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: wtcx-admission-webhook
+        cache.wtcx.dev/inject: disabled
+    spec:
+      containers:
+      - image: webhook-test:0.0.1
+        name: wtcx-admission-webhook
+        env:
+          - name: NODE_ENV
+            value: production
+        volumeMounts:
+          - name: wtcx-admission-webhook
+            mountPath: /certs
+        resources:
+          limits:
+            cpu: "200m"
+            memory: 100Mi
+          requests:
+            cpu: "200m"
+            memory: 100Mi
+      volumes:
+        - name: wtcx-admission-webhook
+          secret:
+            secretName: wtcx-admission-webhook-crt-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wtcx-admission-webhook
+  name: wtcx-admission-webhook
+  namespace: default
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    app: wtcx-admission-webhook

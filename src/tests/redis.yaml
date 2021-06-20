@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        cache.wtcx.dev/inject: "true"
+        cache.wtcx.dev/port: "5566"
+        cache.wtcx.dev/memory: "100Mi"
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:alpine
+        name: redis
+        command:
+          - "sh"
+          - "-c"
+          - "redis-cli -h localhost -p 5566 monitor"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 50m
+            memory: 50Mi
