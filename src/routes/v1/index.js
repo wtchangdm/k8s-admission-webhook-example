@@ -39,7 +39,7 @@ const mutate = async (req, res) => {
 const validateMutationResult = async (req, res) => {
   const uid = req.body.request.uid
 
-  // Any successfully mutated pod request shouldn't reach here as it will be allowed from hook "fastifyHooks.skipOnPatchedPod".
+  // All pod requests shouldn't reach here as it's expected be allowed from hook "fastifyHooks.skipOnPatchedPod".
   // Just reject if nothing further needs to be done.
   return k8sAdmissionReviewHelper.buildRejectResponse(uid, {
     code: 400,
