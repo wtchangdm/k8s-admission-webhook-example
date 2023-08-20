@@ -36,7 +36,7 @@ const mutate = async (req, res) => {
  * @param {import('fastify').FastifyRequest} req
  * @param {import('fastify').fastifyreply} res
  */
-const validateMutationResult = async (req, res) => {
+const validate = async (req, res) => {
   const uid = req.body.request.uid
 
   // All pod requests shouldn't reach here as it's expected be allowed from hook "fastifyHooks.skipOnPatchedPod".
@@ -61,7 +61,7 @@ const v1 = (v1Apis, opts, done) => {
 
     sidecarMutatingApis.post('/hook/cache/mutate', mutate)
 
-    sidecarMutatingApis.post('/hook/cache/validate', validateMutationResult)
+    sidecarMutatingApis.post('/hook/cache/validate', validate)
     done()
   })
 
