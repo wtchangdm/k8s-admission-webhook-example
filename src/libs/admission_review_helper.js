@@ -44,18 +44,15 @@ const createRedisContainer = pod => {
  * @returns {string}
  */
 const isSidecarPatched = pod => {
-  let isPatched = false
-
   for (const container of pod.spec?.containers) {
     if (container.name === REDIS_SIDECAR_CONTAINER) {
       // We can do further, like check whether the port and the memory usage match annotations.
       // But since the container's name matches, it's rather unnecessary to go that far.
-      isPatched = true
-      break
+      return true
     }
   }
 
-  return isPatched
+  return false
 }
 
 /**
